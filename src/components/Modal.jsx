@@ -9,8 +9,8 @@ export default function CustomModal({
   children,
   onShowModalA,
   onShowModalB,
-  // onlyEven,
-  // handleToggleEven,
+  onlyEven,
+  handleToggleEven,
 }) {
   return (
     <Modal
@@ -30,10 +30,10 @@ export default function CustomModal({
         >
           <div>{title}</div>
           <div className="d-flex justify-content-center mt-3">
-            <Button className="m-2" variant="primary" onClick={onShowModalA}>
+            <Button style={{background:" #46139f"}} className="m-2" variant="primary" onClick={onShowModalA}>
               All Contacts
             </Button>
-            <Button className="m-2" variant="warning" onClick={onShowModalB}>
+            <Button style={{background:"#ff7f50"}} className="m-2" variant="warning" onClick={onShowModalB}>
               US Contacts
             </Button>
             <Button className="m-2" variant="secondary" onClick={onHide}>
@@ -44,7 +44,7 @@ export default function CustomModal({
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
       <Modal.Footer>
-        {/* <div className="footer-checkbox">
+        <div className="footer-checkbox">
           <input
             type="checkbox"
             id="onlyEven"
@@ -52,7 +52,7 @@ export default function CustomModal({
             onChange={handleToggleEven}
           />
           <label htmlFor="onlyEven">Only even</label>
-        </div> */}
+        </div>
       </Modal.Footer>
     </Modal>
   );

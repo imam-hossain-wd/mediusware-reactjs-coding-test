@@ -1,38 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomModal from './Modal';
 import { useDataContext } from '../DataContext/DataContext';
 
+
+
 function Problem2() {
-    const {contacts, page, setPage, searchQuery, setSearchQuery, pageCount } = useDataContext();
+    const {  contacts:data,
+        handleShowModalA,
+        handleShowModalB,
+        handleCloseModal, 
+        showModalA,
+        showModalB,
+        onlyEven,
+        handleToggleEven
+    } = useDataContext();
 
-    const [showModalA, setShowModalA] = useState(false);
-    const [showModalB, setShowModalB] = useState(false);
-    const [filteredContacts, setFilteredContacts] = useState([]);
-    const [onlyEven, setOnlyEven] = useState(false);
-
+    const contacts = data
     console.log(contacts, 'contacts');
-    const handleShowModalA = () => {
-        setShowModalA(true);
-    };
-
-    const handleShowModalB = () => {
-        setShowModalB(true);
-    };
-
-    const handleCloseModal = () => {
-        setShowModalA(false);
-        setShowModalB(false);
-    };
-
-    const handleToggleEven = () => {
-        setOnlyEven(!onlyEven);
-        if (onlyEven) {
-            setFilteredContacts(contacts.filter(contact => contact.id % 2 === 0));
-        } else {
-            setFilteredContacts(contacts);
-        }
-    };
-
+  
     return (
         <div className="container">
             <div className="row justify-content-center mt-5">
@@ -54,7 +39,7 @@ function Problem2() {
             >
 
 
-                {filteredContacts.map(contact => (
+                {contacts.map(contact => (
                     <div key={contact.id}>
                         <p>{contact.id} - {contact.phone}</p>
                     </div>
@@ -70,13 +55,12 @@ function Problem2() {
             >
 
 
-                {filteredContacts.map(contact => (
+                {contacts.map(contact => (
                     <div key={contact.id}>
                         <p>{contact.id} - {contact.phone}</p>
                     </div>
                 ))}
             </CustomModal>
-
         </div>
     );
 }
