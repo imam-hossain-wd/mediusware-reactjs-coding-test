@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Problem1 = () => {
+
     const [tasks, setTasks] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
-    const [filter, setFilter] = useState('all');
+    const [filter, setFilter] = useState('active');
+    
+
+    useEffect(() => {
+        if (filter === "active") {
+            setFilteredTasks(tasks.filter(task => task.status === 'Active'));
+        } else if (filter === "completed") {
+            setFilteredTasks(tasks.filter(task => task.status === 'Completed'));
+        } else {
+            setFilteredTasks(tasks);
+        }
+    }, [tasks, filter]);
+
+
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
@@ -11,26 +25,15 @@ const Problem1 = () => {
         const status = event.target.elements.status.value.charAt(0).toUpperCase() + event.target.elements.status.value.slice(1);
         const newTask = { name, status };
         setTasks(prevTasks => [...prevTasks, newTask]);
-        if (filter === 'all' || filter === status) {
-            setFilteredTasks(prevFilteredTasks => [...prevFilteredTasks, newTask]);
-        }
         event.target.reset();
     };
 
-    const handleFilterClick = (val) => {
-        setFilter(val);
-        if (val === 'all') {
-            setFilteredTasks(tasks);
-        } else {
-            const filtered = tasks.filter(task => task.status.toLowerCase() === val.toLowerCase());
-            setFilteredTasks(filtered);
-        }
-    };
 
     return (
         <div className="container">
             <div className="row justify-content-center mt-5">
                 <h4 className='text-center text-uppercase mb-5'>Problem-1</h4>
+                {/* form  */}
                 <div className="col-6">
                     <form onSubmit={handleFormSubmit} className="row gy-2 gx-3 align-items-center mb-4">
                         <div className="col-auto">
@@ -44,18 +47,20 @@ const Problem1 = () => {
                         </div>
                     </form>
                 </div>
+                {/* form end */}
                 <div className="col-8">
                     <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
                         <li className="nav-item">
-                            <button className={`nav-link ${filter === 'all' && 'active'}`} type="button" onClick={() => handleFilterClick('all')}>All</button>
+                            <button className={`nav-link ${filter === 'active' && 'active'}`} type="button" onClick={() => setFilter('active')}>Active</button>
                         </li>
                         <li className="nav-item">
-                            <button className={`nav-link ${filter === 'active' && 'active'}`} type="button" onClick={() => handleFilterClick('active')}>Active</button>
+                            <button className={`nav-link ${filter === 'completed' && 'active'}`} type="button" onClick={() => setFilter('completed')}>Completed</button>
                         </li>
                         <li className="nav-item">
-                            <button className={`nav-link ${filter === 'completed' && 'active'}`} type="button" onClick={() => handleFilterClick('completed')}>Completed</button>
+                            <button className={`nav-link ${filter === 'all' && 'active'}`} type="button" onClick={() => setFilter('all')}>All</button>
                         </li>
                     </ul>
+                    {/* table */}
                     <table className="table table-striped">
                         <thead>
                             <tr>
@@ -66,7 +71,7 @@ const Problem1 = () => {
                         <tbody>
                             {filteredTasks.map((task, index) => (
                                 <tr key={index}>
-                                    <td>{task.name}</td>
+                                    <td style={{width: "300px"}}>{task.name}</td>
                                     <td>{task.status}</td>
                                 </tr>
                             ))}
@@ -79,3 +84,4 @@ const Problem1 = () => {
 };
 
 export default Problem1;
+
