@@ -1,28 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import CustomModal from './Modal';
+import { useDataContext } from '../DataContext/DataContext';
 
 function Problem2() {
+    const {contacts, page, setPage, searchQuery, setSearchQuery, pageCount } = useDataContext();
+
     const [showModalA, setShowModalA] = useState(false);
     const [showModalB, setShowModalB] = useState(false);
-    const [contacts, setContacts] = useState([]);
     const [filteredContacts, setFilteredContacts] = useState([]);
     const [onlyEven, setOnlyEven] = useState(false);
 
-    useEffect(() => {
-        fetchContacts();
-    }, []);
-      
-    const fetchContacts = () => {
-        fetch('https://contact.mediusware.com/api/contacts/?format=json&page=30')
-            .then(response => response.json())
-            .then(data => {
-                setContacts(data.results);
-                setFilteredContacts(data.results);
-            })
-            .catch(error => console.error('Error fetching contacts:', error));
-    };
-
-
+    console.log(contacts, 'contacts');
     const handleShowModalA = () => {
         setShowModalA(true);
     };
