@@ -1,22 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import useContactsFetch from "./useDataFetch";
+import { useDataContext } from "../DataContext/DataContext";
 
-export default function CustomModal({
-  show,
-  onHide,
-  title,
-  children,
-  onShowModalA,
-  onShowModalB,
-  onlyEven,
-  handleToggleEven,
-}) {
+export default function CustomModal({}) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [onlyEven, setOnlyEven] = useState(false);
+
+  const {
+    handleShowModalA,
+    handleShowModalB,
+    handleCloseModal,
+    showModalA,
+    showModalB,
+  } = useDataContext();
+
+  const endpoint = showModalA
+    ? `/contacts/?search=${searchTerm}&page=${page}`
+    : `/country-contacts/United%20States/?search=${searchTerm}`;
+
+  const contactDatas = useContactsFetch(searchTerm, page, endpoint);
+  const contacts = onlyEven
+    ? contactDatas.filter((contact) => contact.id % 2 === 0)
+    : contactDatas;
+
+  const handleToggleEven = () => {
+    setOnlyEven((prevState) => !prevState);
+  };
+
+  const showModal = showModalA || showModalB;
+  const modalTitle = showModalA ? "Modal A" : "Modal B";
+
   return (
     <Modal
       size="lg"
-      show={show}
-      onHide={onHide}
+      show={showModal}
+      onHide={handleCloseModal}
       aria-labelledby="example-modal-sizes-title-lg"
     >
       <Modal.Header closeButton={false}>
@@ -28,21 +49,49 @@ export default function CustomModal({
             justifyContent: "center",
           }}
         >
-          <div>{title}</div>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div>{modalTitle}</div>
           <div className="d-flex justify-content-center mt-3">
-            <Button style={{background:" #46139f"}} className="m-2" variant="primary" onClick={onShowModalA}>
+            <Button
+              style={{ background: " #46139f" }}
+              className="m-2"
+              variant="primary"
+              onClick={handleShowModalA}
+            >
               All Contacts
             </Button>
-            <Button style={{background:"#ff7f50"}} className="m-2" variant="warning" onClick={onShowModalB}>
+            <Button
+              style={{ background: "#ff7f50" }}
+              className="m-2"
+              variant="warning"
+              onClick={handleShowModalB}
+            >
               US Contacts
             </Button>
-            <Button className="m-2" variant="secondary" onClick={onHide}>
+            <Button
+              className="m-2"
+              variant="secondary"
+              onClick={handleCloseModal}
+            >
               Close
             </Button>
           </div>
         </div>
       </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
+      <Modal.Body>
+        {/* Modal Body Section */}
+        {contacts?.map((contact) => (
+          <div key={contact.id}>
+            <p>
+              {contact.id} - {contact.phone}
+            </p>
+          </div>
+        ))}
+      </Modal.Body>
       <Modal.Footer>
         <div className="footer-checkbox">
           <input
@@ -53,6 +102,7 @@ export default function CustomModal({
           />
           <label htmlFor="onlyEven">Only even</label>
         </div>
+        <button>Next</button>
       </Modal.Footer>
     </Modal>
   );
