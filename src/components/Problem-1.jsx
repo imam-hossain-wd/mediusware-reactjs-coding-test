@@ -1,4 +1,4 @@
-import { useDataContext } from "../DataContext/DataContext";
+import { useDataContext } from "../context/DataContext";
 
 const Problem1 = () => {
     

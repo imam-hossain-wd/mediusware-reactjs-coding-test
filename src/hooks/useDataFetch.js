@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-const useContactsFetch = (searchTerm, page, endpoint) => {
-    
+const useContactsFetch = (searchTerm, endpoint) => {
+
   const [contacts, setContacts] = useState([]);
   useEffect(() => {
     const fetchContacts = async () => {
@@ -17,7 +17,7 @@ const useContactsFetch = (searchTerm, page, endpoint) => {
     };
 
     fetchContacts();
-  }, [searchTerm, page, endpoint]);
+  }, [searchTerm, endpoint]);
 
   return contacts;
 };

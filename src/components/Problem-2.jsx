@@ -1,5 +1,5 @@
-import CustomModal from "./Modal";
-import { useDataContext } from "../DataContext/DataContext";
+import CustomModal from "../shared/Modal";
+import { useDataContext } from "../context/DataContext";
 
 function Problem2() {
   const { handleShowModalA, handleShowModalB } = useDataContext();
@@ -26,7 +26,9 @@ function Problem2() {
         </div>
       </div>
 
+      <div>
       <CustomModal />
+      </div>
     </div>
   );
 }

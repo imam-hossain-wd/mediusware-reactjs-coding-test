@@ -14,6 +14,7 @@ export const DataProvider = ({ children }) => {
 
   const [showModalA, setShowModalA] = useState(false);
   const [showModalB, setShowModalB] = useState(false);
+  const [contactData, setContactData]= useState([])
   
   const handleShowModalA = () => {
     setShowModalA(true);
@@ -51,6 +52,8 @@ export const DataProvider = ({ children }) => {
     handleCloseModal,
     showModalA,
     showModalB,
+    contactData, 
+    setContactData
   };
 
   return (
